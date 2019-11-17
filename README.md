@@ -11,7 +11,7 @@ Retorna a lista com clientes que já realizaram alguma compra (HTTP 200 ok)
 * GET/clientes/{cpf}:
 Retorna a lista de clientes de acordo com o elemento informado como parâmetro (HTTP 200 ok).
 
-- Techs:
-API
-NodeJS
-MongoDB
+Techs:
+* API
+* NodeJS
+* MongoDB
