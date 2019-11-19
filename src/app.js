@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser')
 
 const mongoose = require('mongoose')
 
@@ -16,7 +17,7 @@ mongoose.connect('mongodb://localhost:27017/clientes', {
 const index = require('./routes/index')
 const clientes = require('./routes/clientesRoute')
 
-app.use(express.json());
+app.use(bodyParser.json())
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*")
