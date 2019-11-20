@@ -8,8 +8,9 @@ const ClientesSchema = new mongoose.Schema({
     estadoCivil: { type: String },
     telefone: { type: Number },
     comprou: { type: Boolean }
-},
-    {versionKey: false})
+}, {
+    versionKey: false
+})
 
 const Clientes = mongoose.model('Clientes', ClientesSchema)
 
