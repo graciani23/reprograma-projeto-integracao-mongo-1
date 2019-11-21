@@ -1,14 +1,5 @@
 const Clientes = require('../models/clientes')
 
-// exports.post = (req, res) => {
-//     try {
-//         const clientes = Clientes.create(req.body);
-//         return res.send({ clientes });
-//     } catch (err) {
-//         return res.status(400).send({ error: 'Registration failed: '+err })
-//     }
-// }
-
 exports.post = (req, res) => {
     const cliente = new Clientes(req.body)
 
@@ -27,6 +18,16 @@ exports.get = (req, res) => {
     Clientes.find(function (err, clientes) {
         if (err) res.status(500).send(err);
         res.status(200).send(clientes);
+    })
+}
+
+
+exports.getById = (req, res) => {
+    const clienteId = req.params.id
+    Clientes.find({ _id: clienteId }, function (err, cliente) {
+        if (err) res.status(500).send(err)
+
+        res.status(200).send(cliente)
     })
 }
 
@@ -52,6 +53,18 @@ exports.getByCpf = (req, res) => {
 
         res.status(200).send(cliente)
     })
+}
+
+exports.update = (req, res) => {
+    Clientes.update(
+        { _id: req.params.id },
+        { $set: req.body },
+        { upsert: true },
+        function (err) {
+            if (err) return res.status(500).send({ message: err })
+            res.status(200).send({ message: 'Atualizado com sucesso!' })
+        }
+    )
 }
 
 
