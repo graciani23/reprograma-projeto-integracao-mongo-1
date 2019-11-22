@@ -4,7 +4,7 @@ const controller = require('../controllers/clientesController')
 
 router.post('/', controller.post)
 router.get('/', controller.get)
-router.get('/:id/id', controller.getById)
+router.get('/:_id/id', controller.getById)
 router.get('/compradores', controller.getCompradores)
 router.get('/:cpf', controller.getByCpf)
 router.put('/:_id/atualiza', controller.update)
