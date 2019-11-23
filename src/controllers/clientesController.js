@@ -9,7 +9,7 @@ exports.post = (req, res) => {
         else {
             res.status(201).send({
                 "status": true,
-                "mensagem": "Aluna incluída com sucesso!"
+                "mensagem": "Cliente incluído com sucesso!"
             })
         }
     })
@@ -24,7 +24,7 @@ exports.get = (req, res) => {
 
 
 exports.getById = (req, res) => {
-    const clienteId = req.params.id
+    const clienteId = req.params._id
     Clientes.find({ _id: clienteId }, function (err, cliente) {
         if (err) res.status(500).send(err)
 
@@ -69,6 +69,20 @@ exports.getByCpf = (req, res) => {
 //     )
 // }
 
+exports.updateById = (req, res) => {
+
+    Clientes.update(
+        { _id: req.params._id },
+        { $set: req.body },
+        { upsert: true },
+        function (err) {
+            if (err) return res.status(500).send({ message: err })
+            res.status(200).send({ message: 'Atualizado com sucesso!' })
+        }
+    )
+}
+
+
 exports.update = (req, res) => {
 
     if (!validaForumulario(req.body)) return res.status(400).send('Campo inválido!')
@@ -84,24 +98,26 @@ exports.update = (req, res) => {
     )
 }
 
+//findByIdAndRemove
 
 exports.delete = (req, res) => {
     const clienteId = req.params._id
-    Clientes.findByIdAndRemove(clienteId, function (err, cliente) {
+    Clientes.findById(clienteId, function (err, cliente) {
         if (err) res.status(500).send(err)
 
         if (!cliente) {
             return res.status(200).send({ message: `Infelizmente não localizamos o cliente` })
         }
 
-        aluna.remove(function (err) {
+        cliente.remove(function (err) {
             if (!err) {
-                res.status(204).send({ message: "Aluna removida com sucesso!" })
+                res.status(200).send({ message: "Cliente removido com sucesso!" })
             }
         })
-        res.status(200).send("Cliente removido!")
     })
 }
+
+
 
 const validaForumulario = (campos) => {
 
@@ -111,7 +127,7 @@ const validaForumulario = (campos) => {
     }
     const validation = Joi.validate(campos, schema)
 
-    if (validation.error) {
+    if (validation.erro) {
         return false
     }
     return true

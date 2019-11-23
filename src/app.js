@@ -3,8 +3,8 @@ const app = express()
 const bodyParser = require('body-parser')
 
 const mongoose = require('mongoose')
-
-mongoose.connect('mongodb://localhost:27017/clientes', {
+//mongodb+srv://admin:admin123@reprograma-xazlh.mongodb.net/clientes
+mongoose.connect('mongodb+srv://gracianisousa:admin123@cluster0-ce6zl.mongodb.net/clientes', {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => {
