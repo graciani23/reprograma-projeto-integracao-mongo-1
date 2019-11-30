@@ -1,25 +1,48 @@
 const Clientes = require('../models/clientes')
 const Joi = require('joi')
+const bcrypt = require('bcryptjs')
+const bcryptSalt = 8 // qtde de vezes que o password será embaralhado
 
-exports.post = (req, res) => {
-    const cliente = new Clientes(req.body)
+exports.post = async (req, res) => {
+    const { nome, password, email, cpf, dataNascimento, estadoCivil, telefone, comprou } = req.body
 
-    cliente.save(function (err) {
-        if (err) res.status(500).send('Registration Failed: ' + err)
-        else {
+    const salt = bcrypt.genSaltSync(bcryptSalt)
+    try {
+        const hashPass = await bcrypt.hashSync(password, salt)
+        Clientes.push({ nome, hashPass, email, cpf, dataNascimento, estadoCivil, telefone, comprou })
+
+        return res.status(201).send(Clientes)
+
+    } catch (err) {
+        return res.status(401).send({ error: 'error' + err })
+    }
+    // cliente.save(function (err) {
+    //     if (err) res.status(500).send('Registration Failed: ' + err)
+    //     else {
+    //         res.status(201).send({
+    //             "status": true,
+    //             "mensagem": "Cliente incluído com sucesso!"
+    //         })
+    //     }
+    // })
+
+    cliente.save()
+        .then(() => {
             res.status(201).send({
                 "status": true,
                 "mensagem": "Cliente incluído com sucesso!"
             })
-        }
-    })
+        })
+        .catch(err => res.status(500).send({ message: err }))
 }
 
+
 exports.get = (req, res) => {
-    Clientes.find(function (err, clientes) {
-        if (err) res.status(500).send(err);
-        res.status(200).send(clientes);
-    })
+    Clientes.find()
+        .then((clientes) => {
+            res.status(200).send(clientes)
+        })
+        .catch(err => res.status(500).send({ message: err }))
 }
 
 

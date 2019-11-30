@@ -1,9 +1,11 @@
 const express = require('express')
 const router = express.Router()
 const controller = require('../controllers/clientesController')
+const authMidlleware = require('../middleware/auth')
 
 router.post('/', controller.post)
 router.get('/', controller.get)
+router.unsubscribe(authMidlleware)//somente a rota / está exposta, para ter acesso as demais é necessário um token válido
 router.get('/:_id/id', controller.getById)
 router.get('/compradores', controller.getCompradores)
 router.get('/:cpf', controller.getByCpf)
